@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ButtonStyled, ContainerStyled, FormStyled, InputStyled, TitleStyled } from './components/FormStyled/FormStyled'
+import { ButtonStyled, ContainerStyled, FormStyled, InputStyled, MessageError, TitleStyled } from './components/FormStyled/FormStyled'
 import Wrapper from './components/Wrapper/Wrapper';
 
 import { ButtonDeleteAllStyled, ButtonDeleteStyled, TaskContainerStyled, TasksContainerStyled } from './components/TasksContainer/TasksContainer';
@@ -12,6 +12,8 @@ function App() {
   const [task, setTask] = useState(""); // Estado para almacenar el valor del input
   const [tasks, setTasks] = useState([])
 
+  const [taskError, setTaskError] = useState();
+
   /* // Tareas de prueba para ver como iba quedando los estilos
   let tasks = [
     'Tarea 1', 'Tarea 2', 'Tarea 3',
@@ -23,15 +25,35 @@ function App() {
 
 
   const handleInputChange = (event) => {
-    setTask(event.target.value); // Actualiza el estado con el valor del input
+    let newTask = event.target.value;
+    //console.log("nueva dice ---> " +  newTask);
+    //console.log("nueva dice ---> " +  typeof newTask);
+
+    if(newTask.length < 1 || !checkTaskExists(newTask)){
+      setTaskError(false);
+    }
+    
+    setTask(newTask); // Actualiza el estado con el valor del input
   };
+
+  const checkTaskExists = (task) =>{
+    return tasks.includes(task);
+  }
 
   const handleAddTask = (event) => {
     event.preventDefault();
     if (task.trim() === "") return;
-    console.log('Agregando tarea');
-    setTasks([...tasks, task]); // Agrega la tarea a la lista
-    setTask(""); // Limpia el input después de agregar la tarea
+
+    if(!checkTaskExists(task)){
+      setTaskError(false);
+      console.log('Agregando tarea');
+      setTasks([...tasks, task]); // Agrega la tarea a la lista
+      setTask(""); // Limpia el input después de agregar la tarea
+    }
+    else{
+      console.log('La tarea ya existe');
+      setTaskError(true);
+    }
   }
 
   const deleteTask = (index) => {
@@ -57,6 +79,9 @@ function App() {
             />
             <ButtonStyled type='submit' onClick={handleAddTask}>Agregar</ButtonStyled>
           </ContainerStyled>
+          {
+            taskError && <MessageError>La tarea ya existe</MessageError>
+          }          
         </FormStyled>
         <TasksContainerStyled>
           {
@@ -69,12 +94,11 @@ function App() {
               )
             })
           }
-  
-          {
-            tasks.length > 0 &&
-            <ButtonDeleteAllStyled onClick={deleteAllTasks}>Borrar todas las tareas</ButtonDeleteAllStyled>
-          }
         </TasksContainerStyled>
+        {
+          tasks.length > 0 &&
+          <ButtonDeleteAllStyled onClick={deleteAllTasks}>Borrar todas las tareas</ButtonDeleteAllStyled>
+        }
       </WrapperApp>
     </Wrapper>
   )

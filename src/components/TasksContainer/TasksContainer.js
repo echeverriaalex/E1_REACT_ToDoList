@@ -15,7 +15,7 @@ export const TaskContainerStyled = styled.div`
     gap: 20px;
 
     p{
-        text-transform: capitalize;
+        /*text-transform: capitalize;*/
     }
 
     border-bottom: 1px solid#c0c0c0;

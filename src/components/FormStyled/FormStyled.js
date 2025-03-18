@@ -14,7 +14,6 @@ export const ContainerStyled = styled.div`
     display: flex;
     gap: 5px;
     width: 100%;
-    padding: 5px;
 `;
 
 export const InputStyled = styled.input`
@@ -22,6 +21,15 @@ export const InputStyled = styled.input`
     border-radius: 5px;
     width: 100%;
     border: 1px solid#c4c4c4;
+`;
+
+export const MessageError = styled.p`
+    margin-top: 5px;
+    background: red;
+    color: #fff;
+    width: 100%;
+    padding: 10px 5px;
+    border-radius: 5px;
 `;
 
 export const ButtonStyled = styled.button`
