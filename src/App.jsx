@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { ButtonStyled, ContainerStyled, FormStyled, InputStyled, MessageError, TitleStyled } from './components/FormStyled/FormStyled'
 import Wrapper from './components/Wrapper/Wrapper';
 
@@ -6,13 +6,20 @@ import { ButtonDeleteAllStyled, ButtonDeleteStyled, TaskContainerStyled, TasksCo
 import './index.css';
 import { WrapperApp } from './components/WrapperApp/WrapperApp';
 
+import { ToDoContext } from './context/context';
+
 function App() {
 
   // Le pedi ayuda a chatGTP para resolver este ejercicio
   const [task, setTask] = useState(""); // Estado para almacenar el valor del input
-  const [tasks, setTasks] = useState([])
+  // const [tasks, setTasks] = useState([]) lo comento porque ya uso el context
 
   const [taskError, setTaskError] = useState();
+
+  const { toDoList, setToDoList } = useContext(ToDoContext);  // importo el context y su state
+
+  //console.log(toDoList);
+  
 
   /* // Tareas de prueba para ver como iba quedando los estilos
   let tasks = [
@@ -37,7 +44,7 @@ function App() {
   };
 
   const checkTaskExists = (task) =>{
-    return tasks.includes(task);
+    return toDoList.includes(task);
   }
 
   const handleAddTask = (event) => {
@@ -47,7 +54,8 @@ function App() {
     if(!checkTaskExists(task)){
       setTaskError(false);
       console.log('Agregando tarea');
-      setTasks([...tasks, task]); // Agrega la tarea a la lista
+      //setTasks([...tasks, task]); // Agrega la tarea a la lista
+      setToDoList([...toDoList, task]);
       setTask(""); // Limpia el input después de agregar la tarea
     }
     else{
@@ -58,11 +66,13 @@ function App() {
 
   const deleteTask = (index) => {
     console.log('Borrando tarea');
-    setTasks(tasks.filter((task, i) => i !== index));
+    //setTasks(tasks.filter((task, i) => i !== index));
+    setToDoList(toDoList.filter((task, i) => i !== index));
   }
 
   const deleteAllTasks = () => {
-    setTasks([]);
+    //setTasks([]);
+    setToDoList([]);
   }
 
   return (
@@ -85,7 +95,7 @@ function App() {
         </FormStyled>
         <TasksContainerStyled>
           {
-            tasks.map((task, index) => {
+            toDoList.map((task, index) => {
               return (
                 <TaskContainerStyled key={index}>
                   <p>{task}</p>
@@ -96,7 +106,7 @@ function App() {
           }
         </TasksContainerStyled>
         {
-          tasks.length > 0 &&
+          toDoList.length > 0 &&
           <ButtonDeleteAllStyled onClick={deleteAllTasks}>Borrar todas las tareas</ButtonDeleteAllStyled>
         }
       </WrapperApp>
