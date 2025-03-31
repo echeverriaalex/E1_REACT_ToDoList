@@ -1,6 +1,10 @@
 import styled from "styled-components";
-import { useState, useContext } from 'react'
-import { ToDoContext } from "../../context/context";
+import { useState } from 'react'
+//import { ToDoContext } from "../../context/context";
+//import { initialList, reducer } from "../reducer/reducer";
+//import { TYPES } from '../ActionTypes/actionTypes'
+import { useDispatch, useSelector } from "react-redux";
+import { addTask } from "../../redux/taskSlice/taskSlice";
 
 export const FormStyled = styled.form`
     /*border: 1px solid #000;*/
@@ -44,12 +48,13 @@ export const ButtonStyled = styled.button`
     cursor: pointer;
 `;
 
-
 export const TaskForm = () => {
-
+    const dispatch = useDispatch(); // dispatch para enviar acciones al store
+    const toDoList = useSelector((state) => state.toDoList);
     const [taskError, setTaskError] = useState();
     const [task, setTask] = useState(""); // Estado para almacenar el valor del input
-    const { toDoList, setToDoList } = useContext(ToDoContext)  // importo el context y su state
+    //const { toDoList, setToDoList } = useContext(ToDoContext);  // importo el context y su state
+    //const [state, dispatch] = useReducer(reducer, initialList);
 
     const handleAddTask = (event) => {
         event.preventDefault();
@@ -57,13 +62,13 @@ export const TaskForm = () => {
     
         if(!checkTaskExists(task)){
           setTaskError(false);
-          console.log('Agregando tarea');
           //setTasks([...tasks, task]); // Agrega la tarea a la lista
-          setToDoList([...toDoList, task]);
+          //setToDoList([...toDoList, task]);
+          //dispatch({type: TYPES.ADD_TASK, payload: task});
+          dispatch(addTask(task)); // Agrega la tarea al store
           setTask(""); // Limpia el input después de agregar la tarea
         }
         else{
-          console.log('La tarea ya existe');
           setTaskError(true);
         }
     }
@@ -73,18 +78,15 @@ export const TaskForm = () => {
     }
 
     const handleInputChange = (event) => {
-        let newTask = event.target.value;
-    
+        let newTask = event.target.value;        
         if(newTask.length < 1 || !checkTaskExists(newTask)){
           setTaskError(false);
         }
-        
         setTask(newTask); // Actualiza el estado con el valor del input
     };
 
-
     return(
-        <FormStyled onSubmit={handleAddTask}>
+        <FormStyled>
             <TitleStyled>Nuctasks</TitleStyled>
             <ContainerStyled>
                 <InputStyled 
@@ -93,7 +95,8 @@ export const TaskForm = () => {
                     value={task} // Controla el input con el estado
                     onChange={handleInputChange} // Captura el valor del input
                 />
-                <ButtonStyled type='submit' onClick={handleAddTask}>Agregar</ButtonStyled>
+                { /* <ButtonStyled type='submit' onClick={handleAddTask}>Agregar</ButtonStyled> */ }
+                <ButtonStyled type='submit' onClick={ handleAddTask }>Agregar</ButtonStyled>
             </ContainerStyled>
             {
                 taskError && <MessageError>La tarea ya existe</MessageError>

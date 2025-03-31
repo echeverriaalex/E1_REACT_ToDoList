@@ -1,6 +1,8 @@
-import { useContext } from "react";
+//import { useContext } from "react";
 import styled from "styled-components";
-import { ToDoContext } from "../../context/context";
+//import { ToDoContext } from "../../context/context";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteTask } from "../../redux/taskSlice/taskSlice";
 
 export const TasksContainerStyled = styled.div`
     width: 100%;
@@ -32,22 +34,23 @@ export const ButtonDeleteStyled = styled.button`
     cursor: pointer;
 `;
 
-
 export const ButtonDeleteAllStyled = styled(ButtonDeleteStyled)`
     margin-top: 20px;
     width: 100%;
 `;
 
-
 export const TaskListContainer = () => {
+    const toDoList = useSelector((state) => state.toDoList);
+    const dispatch = useDispatch(); // dispatch para enviar acciones al store
+    //const { toDoList, setToDoList } = useContext(ToDoContext)  // importo el context y su state
 
-    const { toDoList, setToDoList } = useContext(ToDoContext)  // importo el context y su state
-
+    /*
     const deleteTask = (index) => {
         console.log('Borrando tarea');
         //setTasks(tasks.filter((task, i) => i !== index));
-        setToDoList(toDoList.filter((task, i) => i !== index)); // parametro task lo dejo porque es obligatorio para filter porque el segundo parametro siempre es index
+        //setToDoList(toDoList.filter((task, i) => i !== index)); // parametro task lo dejo porque es obligatorio para filter porque el segundo parametro siempre es index
     }
+    */
 
     return (
         <TasksContainerStyled>
@@ -56,7 +59,7 @@ export const TaskListContainer = () => {
                 return(
                     <TaskContainerStyled key={index}>
                         <p>{task}</p>
-                        <ButtonDeleteStyled onClick={()=>deleteTask(index)}>Borrar</ButtonDeleteStyled>
+                        <ButtonDeleteStyled onClick={()=> dispatch(deleteTask(task))}>Borrar</ButtonDeleteStyled>
                     </TaskContainerStyled>
                     )
                 })

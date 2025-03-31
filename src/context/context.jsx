@@ -4,7 +4,7 @@ export const ToDoContext = createContext();
 
 export const ToDoContextProvider = ({ children }) => {
     
-    const [toDoList, setToDoList] = useState([]);
+    const [toDoList, setToDoList] = useState(["alex", "nahuel", "echeverria"]);
 
     return(
         <ToDoContext.Provider value={{toDoList, setToDoList}} >

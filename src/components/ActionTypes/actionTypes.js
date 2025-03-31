@@ -1,0 +1,5 @@
+export const TYPES = {
+    ADD_TASK: "ADDTASK",
+    DELETE_TASK: "DELETETASK",
+    DELETE_ALL_TASKS: "DELETEALL"
+}
