@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import { useState } from 'react'
 //import { ToDoContext } from "../../context/context";
 //import { initialList, reducer } from "../reducer/reducer";
@@ -6,47 +5,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { addTask } from "../../redux/taskSlice/taskSlice";
 
-export const FormStyled = styled.form`
-    /*border: 1px solid #000;*/
-    width: 100%;
-    padding: 10px;
-`;
-
-export const TitleStyled = styled.h2`
-    text-align: center;
-`;
-
-export const ContainerStyled = styled.div`
-    display: flex;
-    gap: 5px;
-    width: 100%;
-`;
-
-export const InputStyled = styled.input`
-    padding: 5px;
-    border-radius: 5px;
-    width: 100%;
-    border: 1px solid#c4c4c4;
-`;
-
-export const MessageError = styled.p`
-    margin-top: 5px;
-    background: red;
-    color: #fff;
-    width: 100%;
-    padding: 10px 5px;
-    border-radius: 5px;
-`;
-
-export const ButtonStyled = styled.button`
-    border-radius: 5px;
-    text-align: center;
-    color: white;
-    background: #3a83d6;
-    padding: 8px 20px;
-    border: none;
-    cursor: pointer;
-`;
+import { FormStyled, TitleStyled, ContainerStyled, InputStyled, MessageError, ButtonStyled } from "./FormStyled";
 
 export const TaskForm = () => {
     const dispatch = useDispatch(); // dispatch para enviar acciones al store
@@ -66,6 +25,10 @@ export const TaskForm = () => {
           //setToDoList([...toDoList, task]);
           //dispatch({type: TYPES.ADD_TASK, payload: task});
           dispatch(addTask(task)); // Agrega la tarea al store
+          
+          localStorage.getItem("toDoList")?
+              localStorage.setItem("toDoList", JSON.stringify([...JSON.parse(localStorage.getItem("toDoList")), task]))
+            : localStorage.setItem("toDoList", JSON.stringify([...toDoList, task])); // Guarda la lista en el localStorage
           setTask(""); // Limpia el input después de agregar la tarea
         }
         else{

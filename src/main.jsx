@@ -2,8 +2,6 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 //import { ToDoContextProvider } from './context/context.jsx'
 import App from './App.jsx'
-
-
 import { Provider } from 'react-redux';
 import store from './redux/index.js';
 
